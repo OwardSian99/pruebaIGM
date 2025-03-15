@@ -1,0 +1,24 @@
+{
+  "Version": 1,
+  "Hash": "df2JcmPBmwyXnYTm8an7PyIySCiqz+FBTRZxtXNISus=",
+  "Source": "pasaporte.Server",
+  "BasePath": "_content/pasaporte.Server",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "C:\\Users\\Oward\\Documents\\Repositorios\\Prueba\\pruebaIGM\\pasaporte\\pasaporte.client\\pasaporte.client.esproj",
+      "Version": 2,
+      "Source": "pasaporte.client",
+      "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
