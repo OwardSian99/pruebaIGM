@@ -1,10 +1,43 @@
 
-//import { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function Login() {
+    const [id_usuario, setIdUsuario] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
     const handleSubmit = async (e) => {
-        console.log("xd", e)
+        e.preventDefault();
+        setLoading(true);
+        setError("");
+
+        const data = { id_usuario, password };
+
+        try {
+            const response = await fetch("http://localhost:5266/Usuario/Login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert("Login exitoso");
+                console.log("Usuario autenticado:", result);
+                // Aquí puedes almacenar un token o redirigir al usuario
+            } else {
+                setError(result.mensaje || "Error al iniciar sesión");
+            }
+        } catch (error) {
+            setError("No se pudo conectar con el servidor");
+        }
+
+        setLoading(false);
     };
     return (
         <section className="min-h-screen flex items-center
@@ -20,23 +53,37 @@ function Login() {
                     <div className="flex flex-col text-2x1
                      text-left gap-1">
                         <span>ID</span>
-                        <input type="text" className="rounded-md
+                        <input type="text"
+                            value={id_usuario}
+                            onChange={(e) => setIdUsuario(e.target.value)}
+                            className="rounded-md
                             p-1 border-2 outline-none
-                            focus:border-cyan-400 focus:bg-slate-50"></input>
+                            focus:border-cyan-400 focus:bg-slate-50"
+                            required>
+                        </input>
                     </div>
                     <div className="flex flex-col text-2x1
                      text-left gap-1">
                         <span>Contrasena</span>
                         <input type="password" className="rounded-md
                             p-1 border-2 outline-none
-                            focus:border-cyan-400 focus:bg-slate-50"></input>
+                            focus:border-cyan-400 focus:bg-slate-50"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required>
+                        </input>
                     </div>
+                    {error && <p className="text-red-500">{error}</p>}
 
-                    <button className="px-10 py-2 text-2x1 rounded-md
+                    <button type="submit"
+                        disabled={loading}
+                        className="px-10 py-2 text-2x1 rounded-md
                         bg-gradient-to-tr from-green-400 to-blue-500
                         hover:from-pink-500 hover:to-yellow-500 text-white">Login
-                        </button>
-                    <p><a href="#" className="text-blue-400
+                    </button>
+                    {loading ? "Cargando..." : ""}
+
+                    <p><a href="/signup" className="text-blue-400
                         hover:underline">Registrate</a></p>
 
                 </form>

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("pasaporte.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a7fafce497ef10b1c9a36192d14db51bd1540c54")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cc3ed7b6f31e152845f39839ec3bee91b07354a6")]
 [assembly: System.Reflection.AssemblyProductAttribute("pasaporte.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("pasaporte.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

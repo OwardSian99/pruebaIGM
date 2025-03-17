@@ -12,6 +12,7 @@
     <PackageJsonDependenciesHeadlessuiReact Condition="$(PackageJsonDependenciesHeadlessuiReact) == ''">^2.2.0</PackageJsonDependenciesHeadlessuiReact>
     <PackageJsonDependenciesHeroiconsReact Condition="$(PackageJsonDependenciesHeroiconsReact) == ''">^2.2.0</PackageJsonDependenciesHeroiconsReact>
     <PackageJsonDependenciesTailwindcssVite Condition="$(PackageJsonDependenciesTailwindcssVite) == ''">^4.0.14</PackageJsonDependenciesTailwindcssVite>
+    <PackageJsonDependenciesPrimereact Condition="$(PackageJsonDependenciesPrimereact) == ''">^10.9.3</PackageJsonDependenciesPrimereact>
     <PackageJsonDependenciesReact Condition="$(PackageJsonDependenciesReact) == ''">^19.0.0</PackageJsonDependenciesReact>
     <PackageJsonDependenciesReactDom Condition="$(PackageJsonDependenciesReactDom) == ''">^19.0.0</PackageJsonDependenciesReactDom>
     <PackageJsonDependenciesReactRouterDom Condition="$(PackageJsonDependenciesReactRouterDom) == ''">^7.3.0</PackageJsonDependenciesReactRouterDom>
