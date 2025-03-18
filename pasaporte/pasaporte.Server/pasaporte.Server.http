@@ -1,0 +1,6 @@
+@pasaporte.Server_HostAddress = http://localhost:5266
+
+GET {{pasaporte.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
