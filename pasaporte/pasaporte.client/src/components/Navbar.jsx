@@ -1,16 +1,17 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import DeleteLocalStorage from '../LocalStorage/Delete'
 
 const navUser = [
     { name: 'Modificar Datos', href: '/main', current: true },
-    { name: 'Pasaportes', href: '/UsuarioPasaportes', current: false },
+    { name: 'Pasaportes', href: '/UsuarioPasaportes', current: true },
 ]
 
 const navAdmin = [
-    { name: 'Usuarios', href: '#', current: true },
-    { name: 'Pasaportes', href: '#', current: false },
-    { name: 'Projects', href: '#', current: false },
-    { name: 'Calendar', href: '#', current: false },
+    { name: 'Modificar Datos', href: '/main', current: true },
+    { name: 'Usuarios', href: '/AdminUsuarios', current: true },
+    { name: 'Pasaportes', href: '/AdminPasaportes', current: true },
+    { name: 'Nuevo Pasaporte', href: '/NuevoPasaporte', current: true },
 ]
 
 function classNames(...classes) {
@@ -18,9 +19,10 @@ function classNames(...classes) {
 }
 
 export default function NavBar() {
+
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-    console.log(usuario)
-    const navigation = usuario?.rol === 1 ? navAdmin : navUser;
+    const navigation = usuario?.rol ? navAdmin : navUser;
+
     return (
         <Disclosure as="nav" className="bg-gray-800 bg-gradient-to-r from-cyan-500 from-10%
             via-indigo-500 via-50% to-sky-500 to-100%">
@@ -74,10 +76,11 @@ export default function NavBar() {
 
                                 <MenuItem>
                                     <a
-                                        href="#"
+                                        href="/"
+                                        onClick= {DeleteLocalStorage}
                                         className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
                                     >
-                                        Sign out
+                                        Cerrar sesión
                                     </a>
                                 </MenuItem>
                             </MenuItems>

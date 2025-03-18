@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import NavBar from '../components/Navbar'
-import GeneralTable from '../components/GeneralTable';
 import { Toast } from 'primereact/toast';
+import GeneralTable from '../components/GeneralTable';
 
-
-
-function UsuarioPasaportes() {
-    const usuario = JSON.parse(localStorage.getItem("usuario"));
+function AdminPasaportes() {
+    //const usuario = JSON.parse(localStorage.getItem("usuario"));
     const toastRef = useRef(null);
     const [pasaportes, setPasaportes] = useState([]);
 
@@ -15,7 +13,7 @@ function UsuarioPasaportes() {
 
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:5266/Pasaporte/PasaportesUsuario/${usuario.usuario}`);
+                const response = await fetch(`http://localhost:5266/Pasaporte/TodosPasaportes`);
 
                 if (!response.ok) {
                     throw new Error("Error al obtener el usuario");
@@ -30,8 +28,11 @@ function UsuarioPasaportes() {
         }
         fetchData();
     }, []);
-    const handleEstado = async  (pasaporte) => {
-        console.log(`Eliminar usuario: ${pasaporte.estado} ${usuario.usuario}`);
+
+
+    
+    const handleEstado = async (pasaporte) => {
+        console.log(`Eliminar usuario: ${pasaporte.estado}`);
 
         const response = await fetch(`http://localhost:5266/Pasaporte/EstadoPasaporte/${pasaporte.idPasaporte}`, {
             method: "PUT",
@@ -58,6 +59,8 @@ function UsuarioPasaportes() {
         }
     };
 
+    
+
     return (
         <>
             <NavBar />
@@ -69,7 +72,9 @@ function UsuarioPasaportes() {
                     { header: "Fecha Vencimiento", field: "fechaVencimiento" },
                     { header: "Lugar", field: "lugar" },
                     { header: "Pais", field: "nombrePais" },
-                    { header: "Estado", field: "estado"  }
+                    { header: "Estado", field: "estado" },
+                    { header: "Nombre ", field: "nombreUsuario" },
+                    { header: "Apellidos", field: "apellidoUsuario" },
 
                 ]}
                 data={pasaportes}
@@ -80,4 +85,4 @@ function UsuarioPasaportes() {
             <Toast ref={toastRef} position="top-left" />
         </>)
 };
-export default UsuarioPasaportes;
+export default AdminPasaportes;

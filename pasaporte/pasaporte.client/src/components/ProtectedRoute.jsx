@@ -1,8 +1,14 @@
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from "react-router-dom";
 
-export const ProtectedRoute = (
-    {
-        children
-    }) => {
-        return children
+const ProtectedRoute = ({ allowAdmin, allowCitizen, redirectTo = "/" }) => {
+    const userData = JSON.parse(localStorage.getItem("usuario")); // Obtener datos del usuario
+    const userRole = userData?.rol; // `true` o `false`
+
+    if ((allowAdmin && userRole === true) || (allowCitizen && userRole === false)) {
+        return <Outlet />;
     }
+
+    return <Navigate to={redirectTo} />;
+};
+
+export default ProtectedRoute;

@@ -1,6 +1,6 @@
 import React from "react";
 
-function Table({ columns, data, actions }) {
+function UserTable({ columns, data, actions }) {
     return (
         <div className="p-8">
             <div className="overflow-x-auto">
@@ -47,4 +47,4 @@ function Table({ columns, data, actions }) {
     );
 }
 
-export default Table;
+export default UserTable;

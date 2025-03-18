@@ -41,7 +41,10 @@ function Login() {
                     
                     navigate("/main")
                 } else {
-                    console.log("aquí va el admin")
+                    alert("Bienvenido Administrador")
+                    localStorage.setItem("usuario", JSON.stringify(result))
+
+                    navigate("/main")
                 }
                 
             } else {
@@ -50,7 +53,8 @@ function Login() {
                 setError(result.mensaje || "Error al iniciar sesión");
             }
         } catch (error) {
-            setError("No se pudo conectar con el servidor: " + error);
+            console.log(error)
+            setError("Error: "+ error);
         }
 
         setLoading(false);
