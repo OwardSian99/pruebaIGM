@@ -1,9 +1,14 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
-const navigation = [
-    { name: 'Dashboard', href: '#', current: true },
-    { name: 'Team', href: '#', current: false },
+const navUser = [
+    { name: 'Modificar Datos', href: '/main', current: true },
+    { name: 'Pasaportes', href: '/UsuarioPasaportes', current: false },
+]
+
+const navAdmin = [
+    { name: 'Usuarios', href: '#', current: true },
+    { name: 'Pasaportes', href: '#', current: false },
     { name: 'Projects', href: '#', current: false },
     { name: 'Calendar', href: '#', current: false },
 ]
@@ -13,6 +18,9 @@ function classNames(...classes) {
 }
 
 export default function NavBar() {
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    console.log(usuario)
+    const navigation = usuario?.rol === 1 ? navAdmin : navUser;
     return (
         <Disclosure as="nav" className="bg-gray-800 bg-gradient-to-r from-cyan-500 from-10%
             via-indigo-500 via-50% to-sky-500 to-100%">
@@ -63,22 +71,7 @@ export default function NavBar() {
                                 transition
                                 className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
                             >
-                                <MenuItem>
-                                    <a
-                                        href="#"
-                                        className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                                    >
-                                        Your Profile
-                                    </a>
-                                </MenuItem>
-                                <MenuItem>
-                                    <a
-                                        href="#"
-                                        className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                                    >
-                                        Settings
-                                    </a>
-                                </MenuItem>
+
                                 <MenuItem>
                                     <a
                                         href="#"

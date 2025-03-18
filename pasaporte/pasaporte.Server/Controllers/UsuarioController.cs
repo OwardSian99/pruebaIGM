@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using pasaporte.Server.Models;
 using System.Security.Cryptography;
-using System.Text;
-
 
 
 namespace pasaporte.Server.Controllers
@@ -27,14 +25,39 @@ namespace pasaporte.Server.Controllers
             return StatusCode(StatusCodes.Status200OK, lista);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("Login")]
-        public IActionResult Login()
+        public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
-            return StatusCode(StatusCodes.Status200OK);
+            if (loginRequest == null || string.IsNullOrEmpty(loginRequest.IdUsuario) || string.IsNullOrEmpty(loginRequest.Contrasenia))
+            {
+                return BadRequest("Debe proporcionar un correo y una contraseña.");
+            }
+
+            var usuario = _dbContext.Usuarios.FirstOrDefault(u => u.IdUsuario.ToString() == loginRequest.IdUsuario);
+            if (usuario == null)
+            {
+                return Unauthorized("Credenciales inválidas.");
+            }
+
+            if (!VerificarContrasenia(loginRequest.Contrasenia, usuario.Contrasenia))
+            {
+                return Unauthorized("Credenciales inválidas.");
+            }
+
+            return Ok(new 
+            {   mensaje = "Login exitoso", 
+                usuario = usuario.IdUsuario, 
+                nombre = usuario.Nombres,
+                apellido = usuario.Apellidos,
+                email = usuario.Email,
+                rol = usuario.Rol,
+                estado = usuario.Estado
+            });
         }
 
-        public bool VerificarContrasenia(string contrasenia, string contraseniaDb)
+
+        private bool VerificarContrasenia(string contrasenia, string contraseniaDb)
         {
             var hash = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(contrasenia));
             var hashBase64 = Convert.ToBase64String(hash);
@@ -71,6 +94,91 @@ namespace pasaporte.Server.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("ObtenerUsuario/{id}")]
+        public IActionResult ObtenerUsuario(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("Debe proporcionar un ID de usuario válido.");
+            }
+
+            var usuario = _dbContext.Usuarios.FirstOrDefault(u => u.IdUsuario.ToString() == id);
+
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado.");
+            }
+
+            return Ok(new
+            {
+                idUsuario = usuario.IdUsuario,
+                nombre = usuario.Nombres,
+                apellido = usuario.Apellidos,
+                email = usuario.Email,
+                rol = usuario.Rol,
+                estado = usuario.Estado
+            });
+        }
+
+        [HttpPut]
+        [Route("ActualizarUsuario")]
+        public async Task<IActionResult> ActualizarUsuario([FromBody] ActualizarUsuarioRequest usuarioActualizarRequest)
+        {
+            if (usuarioActualizarRequest == null || string.IsNullOrEmpty(usuarioActualizarRequest.IdUsuario))
+            {
+                return BadRequest("Debe proporcionar un ID de usuario válido.");
+            }
+
+            var usuario = await _dbContext.Usuarios.FirstOrDefaultAsync(u => u.IdUsuario.ToString() == usuarioActualizarRequest.IdUsuario);
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado.");
+            }
+
+            // Actualización de datos
+            usuario.Nombres = usuarioActualizarRequest.Nombres ?? usuario.Nombres;
+            usuario.Apellidos = usuarioActualizarRequest.Apellidos ?? usuario.Apellidos;
+            usuario.Email = usuarioActualizarRequest.Email ?? usuario.Email;
+
+            //validación de la nueva contraseña
+            if (!string.IsNullOrEmpty(usuarioActualizarRequest.Contrasena))
+            {
+                // Hacer el hash de la nueva contraseña
+                usuario.Contrasenia = Convert.ToBase64String(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(usuarioActualizarRequest.Contrasena)));
+            }
+
+            try
+            {
+                _dbContext.Usuarios.Update(usuario);
+                await _dbContext.SaveChangesAsync();
+
+                return Ok(new { mensaje = "Usuario actualizado exitosamente", usuario = usuario });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Error interno del servidor", error = ex.Message });
+            }
+        }
+
+
 
     }
+    public class LoginRequest
+    {
+        public required string IdUsuario { get; set; }
+        public required string Contrasenia { get; set; }
+    }
+
+    public class ActualizarUsuarioRequest
+    {
+        public required string IdUsuario { get; set; }
+        public string? Nombres { get; set; }
+        public string? Apellidos { get; set; }
+        public string? Email { get; set; }
+        public string? Contrasena { get; set; } // Este campo puede estar vacío
+    }
+
+
 }
+

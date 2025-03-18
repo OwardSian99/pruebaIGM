@@ -1,19 +1,24 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 function Login() {
     const [id_usuario, setIdUsuario] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+        const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
         setLoading(true);
         setError("");
+        localStorage.clear();
 
-        const data = { id_usuario, password };
+
+        const data = { idUsuario: id_usuario, contrasenia:password };
 
         try {
             const response = await fetch("http://localhost:5266/Usuario/Login", {
@@ -27,14 +32,25 @@ function Login() {
             const result = await response.json();
 
             if (response.ok) {
-                alert("Login exitoso");
+                               
                 console.log("Usuario autenticado:", result);
-                // Aquí puedes almacenar un token o redirigir al usuario
+                if (!result.rol) {
+                    alert("Inicio de sesion exitoso")
+                    console.log("usuario normal")
+                    localStorage.setItem("usuario", JSON.stringify(result))
+                    
+                    navigate("/main")
+                } else {
+                    console.log("aquí va el admin")
+                }
+                
             } else {
+                console.log(result);
+               
                 setError(result.mensaje || "Error al iniciar sesión");
             }
         } catch (error) {
-            setError("No se pudo conectar con el servidor");
+            setError("No se pudo conectar con el servidor: " + error);
         }
 
         setLoading(false);

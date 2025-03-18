@@ -1,17 +1,16 @@
 import { Link } from 'react-router-dom';
 import React from "react";
 import NavBar from '../components/Navbar'
-import UpdateData from '../components/UpdateData';
+import GeneralTable from '../components/GeneralTable';
 import Modal from '../components/Modal';
 
-function MainUser() {
+function UsuarioPasaportes() {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     console.log(usuario)
-    
+
     return (
         <>
             <NavBar />
-            <UpdateData />            
         </>)
 };
-export default MainUser;
+export default UsuarioPasaportes;
